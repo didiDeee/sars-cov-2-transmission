@@ -1,4 +1,4 @@
-import {Simulate} from "react-dom/test-utils";
+import {Moment} from "moment";
 
 function jsonParseSafe(text: string): any {
     if (null == text || "" == text) {
@@ -11,6 +11,11 @@ function jsonParseSafe(text: string): any {
     }
 }
 
+function parseResponse(response: any) {
+    if (response.status === 500) return Promise.resolve({});
+    return response.text().then(jsonParseSafe);
+}
+
 export class OpenCovidService {
     static getSimpleInfo = (): Promise<string> => {
 
@@ -19,6 +24,69 @@ export class OpenCovidService {
                 .then((response) => {
                     console.log(response)
                     response.text().then(resolve)
+                })
+                .catch((error) => {
+                    reject(error)
+                })
+        }));
+    }
+
+    static getCasesByDayAndHealthUnit = (date: Moment, healthUnit: number): Promise<number> => {
+        let dateString = date.format('YYYY-MM-DD');
+        let queryUrl = "https://api.opencovid.ca/summary?" +
+            "stat=cases&before=" + dateString +
+            "&after=" + dateString +
+            "&loc=" + healthUnit
+        return new Promise(((resolve: (result: number) => void, reject: (error: Error) => void) => {
+            fetch(queryUrl)
+                .then((response) => {
+                    parseResponse(response).then((data: any) => {
+                        console.log(data)
+                        let summary = data.summary[0];
+                        resolve(summary.cases);
+                    })
+                })
+                .catch((error) => {
+                    reject(error)
+                })
+        }));
+    }
+
+    static getTotalPopulationByHealthUnit = (healthUnit: number): Promise<number> => {
+        let queryUrl = "https://api.opencovid.ca/other?stat=hr"
+        return new Promise(((resolve: (result: number) => void, reject: (error: Error) => void) => {
+            fetch(queryUrl)
+                .then((response) => {
+                    parseResponse(response).then((data:any) => {
+                        let hrData = data.hr;
+                        hrData.forEach((unit: any) => {
+                            if (unit.HR_UID == healthUnit) {
+                                resolve(unit.pop)
+                            }
+                        })
+                        resolve(-1)
+                    })
+                })
+                .catch((error) => {
+                    reject(error)
+                })
+        }));
+    }
+
+    static getCodesAndPopulations = (): Promise<Map<any, any>> => {
+        let queryUrl = "https://api.opencovid.ca/other?stat=hr"
+
+        return new Promise(((resolve: (result: Map<any, any>) => void, reject: (error: Error) => void) => {
+            fetch(queryUrl)
+                .then((response) => {
+                    parseResponse(response).then((data:any) => {
+                        let hrData = data.hr;
+                        let dict = new Map()
+                        hrData.forEach((unit: any) => {
+                            dict.set(unit.province + "|" + unit.health_region, {id: unit.HR_UID, pop: unit.pop})
+                        })
+                        resolve(dict)
+                    })
                 })
                 .catch((error) => {
                     reject(error)
