@@ -1,5 +1,6 @@
 {
   "name": "sars-cov-2-transmission",
+  "homepage":"https://didideee.github.io/sars-cov-2-transmission",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
