@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack://src/App.css"],"names":[],"mappings":"AAAA,KACI,YAAa,CACb,kBAAmB,CACnB,qBACJ,CACA,QACI,eAAgB,CAChB,eAAgB,CAChB,iBACJ","file":"main.bee6359c.chunk.css","sourcesContent":[".App {\n    display: flex;\n    align-items: center;\n    flex-direction: column;\n}\n.lookup {\n    max-width: 800px;\n    min-width: 560px;\n    align-self: center;\n}"]}
