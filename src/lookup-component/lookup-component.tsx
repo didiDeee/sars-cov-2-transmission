@@ -83,6 +83,8 @@ export class LookupComponent extends React.Component<any, LookupComponentState>{
                             .then((cases: number) => {
                                 this.setState({
                                     percentage: (cases / total * 0.32 * 100).toFixed(4).toString() + "%",
+                                    longitude: this.state.longitude,
+                                    latitude: this.state.latitude,
                                     error: null,
                                     isLoaded: true
                                 })
@@ -149,7 +151,7 @@ export class LookupComponent extends React.Component<any, LookupComponentState>{
         let data:string = this.state.simpleData;
 
 
-        return <div>
+        return <div className={"lookup"}>
             {errorMsg}
             {spinner}
             <form onSubmit={this.handleSubmit}>

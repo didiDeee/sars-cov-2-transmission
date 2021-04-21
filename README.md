@@ -1,3 +1,20 @@
+# Demo Screenshots
+
+### Landing page
+![](landing.png)
+
+### Enter date
+![](date-selection.png)
+
+### Enter other known data
+![](enter-known-data.png)
+
+### Result
+![](result.png)
+
+### Error when location cannot be determined
+![](error.png)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
