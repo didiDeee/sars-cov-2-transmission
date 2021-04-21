@@ -109,7 +109,11 @@ export class OpenCovidService {
                         let topHits = data.results[0].address_components
                         let matches:string[] = [];
                         topHits.forEach((hit:any) => {
-                            matches.push(hit.short_name)
+                            hit.short_name.split(" ").forEach((name:string) => {
+                                if (name.length >=4) {
+                                    matches.push(name)
+                                }
+                            })
                         })
                         resolve(matches);
                     })

@@ -68,6 +68,7 @@ export class LookupComponent extends React.Component<any, LookupComponentState>{
         // try to match location first
         OpenCovidService.getLocationData(this.state.latitude, this.state.longitude)
             .then((results:string[]) => {
+                console.log("matches")
                 console.log(results)
                 let found = false;
                 let locationKey:string = ""
@@ -75,14 +76,19 @@ export class LookupComponent extends React.Component<any, LookupComponentState>{
                     let r: string = results[i];
                     locationKey = this.findLocation(r);
                     if (locationKey.length > 0) {
+                        console.log("using location: " + locationKey)
                         found = true;
                         let total = this.state.populationMap.get(locationKey).pop
                         let healthUnit = this.state.populationMap.get(locationKey).id
+
+
+
                         // if match, then get the other info
                         OpenCovidService.getCasesByDayAndHealthUnit(date, healthUnit)
                             .then((cases: number) => {
+                                let percentage = (cases / total * 0.32 * 100).toFixed(4).toString() + "%";
                                 this.setState({
-                                    percentage: (cases / total * 0.32 * 100).toFixed(4).toString() + "%",
+                                    percentage: locationKey + ": " + percentage,
                                     longitude: this.state.longitude,
                                     latitude: this.state.latitude,
                                     error: null,
