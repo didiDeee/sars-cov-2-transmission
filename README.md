@@ -1,5 +1,7 @@
-# Demo Screenshots
+# Site URL
+https://didideee.github.io/sars-cov-2-transmission/
 
+# Demo Screenshots
 ### Landing page
 ![](landing.png)
 
@@ -61,3 +63,7 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+# To deploy to github pages
+* `yarn predeploy` which actually runs `yarn run build`
+* `yarn deploy` which actually runs `yarn gh-pages -d build`
