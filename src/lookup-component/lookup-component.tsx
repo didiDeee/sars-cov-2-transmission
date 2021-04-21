@@ -17,7 +17,7 @@ class LookupComponentState {
     longitude: string = "";
     latitude: string = "";
     healthUnit: string = "";
-    pickedDate: Date = moment().toDate();
+    pickedDate: Date = moment().subtract(1, "day").toDate();
     populationMap: Map<any, any> = new Map();
     percentage: string = "";
 
@@ -33,7 +33,7 @@ export class LookupComponent extends React.Component<any, LookupComponentState>{
             longitude: "",
             latitude: "",
             healthUnit: "",
-            pickedDate: moment().toDate(),
+            pickedDate: moment().subtract(1, "day").toDate(),
             populationMap: new Map<any, any>(),
             percentage: ""
         }
@@ -44,9 +44,6 @@ export class LookupComponent extends React.Component<any, LookupComponentState>{
     }
 
     findLocation (location: string):string {
-        // this.state.populationMap.forEach((value: any, key: string) => {
-        //     // console.log(key)
-        // })
         for (let entry of Array.from(this.state.populationMap.entries())) {
             let key = entry[0]
             if (key.includes(location)) {
@@ -64,50 +61,74 @@ export class LookupComponent extends React.Component<any, LookupComponentState>{
 
         let date = moment(this.state.pickedDate);
         // let healthUnit = parseInt(this.state.healthUnit);
-
-        // try to match location first
-        OpenCovidService.getLocationData(this.state.latitude, this.state.longitude)
-            .then((results:string[]) => {
-                console.log("matches")
-                console.log(results)
-                let found = false;
-                let locationKey:string = ""
-                for (let i = 0; i < results.length; i++){
-                    let r: string = results[i];
-                    locationKey = this.findLocation(r);
-                    if (locationKey.length > 0) {
-                        console.log("using location: " + locationKey)
-                        found = true;
-                        let total = this.state.populationMap.get(locationKey).pop
-                        let healthUnit = this.state.populationMap.get(locationKey).id
-
-
-
-                        // if match, then get the other info
-                        OpenCovidService.getCasesByDayAndHealthUnit(date, healthUnit)
-                            .then((cases: number) => {
-                                let percentage = (cases / total * 0.32 * 100).toFixed(4).toString() + "%";
-                                this.setState({
-                                    percentage: locationKey + ": " + percentage,
-                                    longitude: this.state.longitude,
-                                    latitude: this.state.latitude,
-                                    error: null,
-                                    isLoaded: true
-                                })
-                            })
-                        break;
+        if (this.state.healthUnit) {
+            let id = parseInt(this.state.healthUnit);
+            OpenCovidService.getCasesByDayAndHealthUnit(date, id)
+                .then((cases:number) => {
+                    let total = -1;
+                    let locationKey = "N/A";
+                    for (let entry of Array.from(this.state.populationMap.entries())) {
+                        let value = entry[1]
+                        if (value.id == id) {
+                            total = value.pop;
+                            locationKey = entry[0];
+                        }
                     }
-                }
 
-                // if we can't find location
-                if (!found) {
+                    let percentage = (cases / total * 0.32 * 100).toFixed(4).toString() + "%";
                     this.setState({
-                        error: new Error("cannot find location, try using the health code instead"),
-                        isLoaded: true,
-                        percentage: "cannot find location, try using the health code instead"
+                        percentage: locationKey + ": " + percentage,
+                        longitude: this.state.longitude,
+                        latitude: this.state.latitude,
+                        healthUnit: "",
+                        error: null,
+                        isLoaded: true
                     })
-                }
-            });
+                })
+        } else {
+
+            // try to match location first
+            OpenCovidService.getLocationData(this.state.latitude, this.state.longitude)
+                .then((results: string[]) => {
+                    console.log("matches")
+                    console.log(results)
+                    let found = false;
+                    let locationKey: string = ""
+                    for (let i = 0; i < results.length; i++) {
+                        let r: string = results[i];
+                        locationKey = this.findLocation(r);
+                        if (locationKey.length > 0) {
+                            console.log("using location: " + locationKey)
+                            found = true;
+                            let total = this.state.populationMap.get(locationKey).pop
+                            let healthUnit = this.state.populationMap.get(locationKey).id
+
+                            // if match, then get the other info
+                            OpenCovidService.getCasesByDayAndHealthUnit(date, healthUnit)
+                                .then((cases: number) => {
+                                    let percentage = (cases / total * 0.32 * 100).toFixed(4).toString() + "%";
+                                    this.setState({
+                                        percentage: locationKey + ": " + percentage,
+                                        longitude: this.state.longitude,
+                                        latitude: this.state.latitude,
+                                        error: null,
+                                        isLoaded: true
+                                    })
+                                })
+                            break;
+                        }
+                    }
+
+                    // if we can't find location
+                    if (!found) {
+                        this.setState({
+                            error: new Error("cannot find location, try using the health code instead"),
+                            isLoaded: true,
+                            percentage: "cannot find location, try using the health code instead"
+                        })
+                    }
+                });
+        }
     }
 
     componentDidMount() {
@@ -163,7 +184,6 @@ export class LookupComponent extends React.Component<any, LookupComponentState>{
             <form onSubmit={this.handleSubmit}>
                 <div className={"form-group"}>
                     <label>Date</label>
-                    {/*<DatePicker selected={startDate} onChange={date => setStartDate(date)} />*/}
                     <DatePicker selected={this.state.pickedDate}
                                 onChange={this.onDatePick}/>
                 </div>
