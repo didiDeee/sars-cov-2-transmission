@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/sars-cov-2-transmission/static/css/main.5ece2ea8.chunk.css",
-    "main.js": "/sars-cov-2-transmission/static/js/main.ba720c98.chunk.js",
-    "main.js.map": "/sars-cov-2-transmission/static/js/main.ba720c98.chunk.js.map",
+    "main.js": "/sars-cov-2-transmission/static/js/main.f3aee8ae.chunk.js",
+    "main.js.map": "/sars-cov-2-transmission/static/js/main.f3aee8ae.chunk.js.map",
     "runtime-main.js": "/sars-cov-2-transmission/static/js/runtime-main.1b188d06.js",
     "runtime-main.js.map": "/sars-cov-2-transmission/static/js/runtime-main.1b188d06.js.map",
     "static/css/2.fd2e79df.chunk.css": "/sars-cov-2-transmission/static/css/2.fd2e79df.chunk.css",
@@ -20,6 +20,6 @@
     "static/css/2.fd2e79df.chunk.css",
     "static/js/2.55b5bd12.chunk.js",
     "static/css/main.5ece2ea8.chunk.css",
-    "static/js/main.ba720c98.chunk.js"
+    "static/js/main.f3aee8ae.chunk.js"
   ]
 }
