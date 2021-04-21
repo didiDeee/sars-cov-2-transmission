@@ -1,5 +1,7 @@
 import {Moment} from "moment";
 
+const API_KEY:string = "AIzaSyBL3Obbx4Z6ziRQpgMq0Sy3QeQa-HYON7Y";
+
 function jsonParseSafe(text: string): any {
     if (null == text || "" == text) {
         return {};
@@ -76,7 +78,7 @@ export class OpenCovidService {
     static getCodesAndPopulations = (): Promise<Map<any, any>> => {
         let queryUrl = "https://api.opencovid.ca/other?stat=hr"
 
-        return new Promise(((resolve: (result: Map<any, any>) => void, reject: (error: Error) => void) => {
+        return new Promise((resolve: (result: Map<any, any>) => void, reject: (error: Error) => void) => {
             fetch(queryUrl)
                 .then((response) => {
                     parseResponse(response).then((data:any) => {
@@ -91,6 +93,27 @@ export class OpenCovidService {
                 .catch((error) => {
                     reject(error)
                 })
-        }));
+        });
+    }
+
+    static getLocationData = (latitude: string, longitude: string): Promise<string[]> => {
+        let queryUrl = "https://maps.googleapis.com/maps/api/geocode/json?" +
+            "latlng="+ latitude + "," + longitude +
+            "&sensor=true" +
+            "&key=" + API_KEY
+
+        return new Promise((resolve: (result: string[]) => void) => {
+            fetch(queryUrl)
+                .then((response) => {
+                    parseResponse(response).then((data:any) => {
+                        let topHits = data.results[0].address_components
+                        let matches:string[] = [];
+                        topHits.forEach((hit:any) => {
+                            matches.push(hit.short_name)
+                        })
+                        resolve(matches);
+                    })
+                })
+        })
     }
 }
