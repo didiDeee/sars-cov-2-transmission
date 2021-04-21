@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/sars-cov-2-transmission/static/css/main.bee6359c.chunk.css",
+    "main.js": "/sars-cov-2-transmission/static/js/main.ba720c98.chunk.js",
+    "main.js.map": "/sars-cov-2-transmission/static/js/main.ba720c98.chunk.js.map",
+    "runtime-main.js": "/sars-cov-2-transmission/static/js/runtime-main.1b188d06.js",
+    "runtime-main.js.map": "/sars-cov-2-transmission/static/js/runtime-main.1b188d06.js.map",
+    "static/css/2.fd2e79df.chunk.css": "/sars-cov-2-transmission/static/css/2.fd2e79df.chunk.css",
+    "static/js/2.55b5bd12.chunk.js": "/sars-cov-2-transmission/static/js/2.55b5bd12.chunk.js",
+    "static/js/2.55b5bd12.chunk.js.map": "/sars-cov-2-transmission/static/js/2.55b5bd12.chunk.js.map",
+    "static/js/3.36c07155.chunk.js": "/sars-cov-2-transmission/static/js/3.36c07155.chunk.js",
+    "static/js/3.36c07155.chunk.js.map": "/sars-cov-2-transmission/static/js/3.36c07155.chunk.js.map",
+    "index.html": "/sars-cov-2-transmission/index.html",
+    "static/css/2.fd2e79df.chunk.css.map": "/sars-cov-2-transmission/static/css/2.fd2e79df.chunk.css.map",
+    "static/css/main.bee6359c.chunk.css.map": "/sars-cov-2-transmission/static/css/main.bee6359c.chunk.css.map",
+    "static/js/2.55b5bd12.chunk.js.LICENSE.txt": "/sars-cov-2-transmission/static/js/2.55b5bd12.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.1b188d06.js",
+    "static/css/2.fd2e79df.chunk.css",
+    "static/js/2.55b5bd12.chunk.js",
+    "static/css/main.bee6359c.chunk.css",
+    "static/js/main.ba720c98.chunk.js"
+  ]
+}
